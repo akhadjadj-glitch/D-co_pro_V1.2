@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Décor Pro">
+  <meta name="theme-color" content="#6366f1">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Décor Pro</title>
+  <style>
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+    input,textarea{-webkit-user-select:text;user-select:text}
+    html{height:-webkit-fill-available}
+    body{margin:0;min-height:100vh;min-height:-webkit-fill-available;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;background:linear-gradient(150deg,#0c0c18 0%,#1a1a2e 50%,#0f1729 100%);color:#e2e8f0;overscroll-behavior:none}
+    input,textarea,button,select{font-family:inherit;font-size:16px}
+    input:focus,textarea:focus,select:focus{outline:none;border-color:#6366f1!important}
+    .header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;padding-top:max(12px,env(safe-area-inset-top));background:rgba(0,0,0,0.4);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:100}
+    .logo{display:flex;align-items:center;gap:10px}
+    .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+    .logo-text{font-size:18px;font-weight:700}
+    .icon-btn{width:40px;height:40px;border-radius:10px;border:none;background:rgba(255,255,255,0.05);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .content{padding:20px;padding-bottom:100px}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+    .stat{background:rgba(255,255,255,0.04);border-radius:14px;padding:14px 8px;text-align:center;border:1px solid rgba(255,255,255,0.06)}
+    .stat-val{font-size:22px;font-weight:700;background:linear-gradient(135deg,#6366f1,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-lbl{font-size:10px;color:#64748b;margin-top:2px;text-transform:uppercase}
+    .section{margin-bottom:28px}
+    .section-title{font-size:13px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px}
+    .list{display:flex;flex-direction:column;gap:10px}
+    .list-item{background:rgba(255,255,255,0.04);border-radius:14px;padding:14px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;display:flex;align-items:center;gap:12px}
+    .list-item:active{background:rgba(255,255,255,0.08)}
+    .badge{display:inline-flex;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+    .fab{position:fixed;bottom:max(24px,calc(env(safe-area-inset-bottom)+16px));right:24px;width:56px;height:56px;border-radius:16px;border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:24px;cursor:pointer;box-shadow:0 8px 24px rgba(99,102,241,0.4);z-index:50;display:flex;align-items:center;justify-content:center}
+    .fab:active{transform:scale(0.95)}
+    .empty{text-align:center;padding:50px 20px}
+    .empty-icon{font-size:50px;margin-bottom:16px;opacity:0.5}
+    .empty-title{font-size:17px;font-weight:600;color:#94a3b8;margin-bottom:6px}
+    .empty-text{color:#64748b;font-size:14px}
+    .back-btn{display:flex;align-items:center;gap:6px;color:#6366f1;font-size:15px;font-weight:500;background:none;border:none;cursor:pointer;padding:8px 0;margin-bottom:12px}
+    .page-title{font-size:24px;font-weight:700;color:#f1f5f9;margin:0 0 4px}
+    .page-meta{font-size:14px;color:#64748b;margin:0 0 20px}
+    .info-box{background:rgba(255,255,255,0.03);border-radius:14px;padding:16px;border:1px solid rgba(255,255,255,0.06);margin-bottom:20px}
+    .info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .info-row:last-child{border-bottom:none}
+    .info-lbl{color:#64748b;font-size:14px}
+    .info-val{color:#f1f5f9;font-size:14px;font-weight:500}
+    .action-bar{display:flex;gap:8px;margin-bottom:20px}
+    .action-btn{flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:#e2e8f0;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+    .action-btn:active{background:rgba(255,255,255,0.08)}
+    .action-btn.danger{color:#ef4444}
+    .tabs{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px}
+    .tab{padding:10px 16px;border-radius:10px;border:none;background:rgba(255,255,255,0.05);color:#94a3b8;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+    .tab.active{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff}
+    .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;z-index:1000}
+    .modal{background:#1e293b;border-radius:24px 24px 0 0;padding:24px;padding-bottom:max(24px,calc(env(safe-area-inset-bottom)+16px));width:100%;max-width:500px;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+    .modal-handle{width:40px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin:0 auto 20px}
+    .modal-title{font-size:20px;font-weight:700;margin:0 0 20px;color:#f1f5f9;text-align:center}
+    .input-group{margin-bottom:16px}
+    .label{display:block;font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:6px}
+    .input{width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.3);color:#f1f5f9;-webkit-appearance:none}
+    .textarea{resize:none;min-height:80px}
+    .select{width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.3);color:#f1f5f9;-webkit-appearance:none;cursor:pointer}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{padding:14px 24px;border-radius:12px;border:none;cursor:pointer;font-weight:600;font-size:15px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn:active{transform:scale(0.98)}
+    .btn-primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;margin-bottom:12px}
+    .btn-secondary{background:rgba(255,255,255,0.05);color:#94a3b8;border:1px solid rgba(255,255,255,0.1)}
+    .btn-danger{background:rgba(239,68,68,0.15);color:#ef4444}
+    .dropzone{border:2px dashed rgba(99,102,241,0.4);border-radius:16px;padding:30px;text-align:center;cursor:pointer;background:rgba(99,102,241,0.05);margin-bottom:16px}
+    .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .photo-item{aspect-ratio:1;border-radius:10px;overflow:hidden;cursor:pointer;position:relative}
+    .photo-item img{width:100%;height:100%;object-fit:cover}
+    .menu-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:500}
+    .menu-panel{position:fixed;top:0;right:0;bottom:0;width:280px;max-width:85vw;background:#1e293b;padding:24px;padding-top:max(24px,env(safe-area-inset-top));z-index:501;overflow-y:auto;transform:translateX(100%);transition:transform 0.3s}
+    .menu-panel.show{transform:translateX(0)}
+    .menu-title{font-size:18px;font-weight:600;margin:0 0 24px;color:#f1f5f9}
+    .menu-item{display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;color:#e2e8f0;font-size:15px;cursor:pointer;margin-bottom:6px;background:rgba(255,255,255,0.03)}
+    .menu-item:active{background:rgba(255,255,255,0.08)}
+    .alert{border-radius:12px;padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+    .alert.warning{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2)}
+    .alert.info{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2)}
+    .chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:12px;background:rgba(255,255,255,0.05);color:#94a3b8;margin-right:6px;margin-bottom:6px}
+    .hidden{display:none!important}
+    .title-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+    .rub-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+    .photo-main{border-radius:16px;overflow:hidden;margin-bottom:16px;aspect-ratio:4/3;background:#1e293b;display:flex;align-items:center;justify-content:center}
+    .photo-main img{width:100%;height:100%;object-fit:cover}
+    .photo-thumbs{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto}
+    .photo-thumb{width:56px;height:56px;border-radius:10px;overflow:hidden;flex-shrink:0}
+    .photo-thumb img{width:100%;height:100%;object-fit:cover}
+    .viewer{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:2000;display:flex;flex-direction:column}
+    .viewer-header{display:flex;justify-content:space-between;padding:16px;padding-top:max(16px,env(safe-area-inset-top))}
+    .viewer-close{background:none;border:none;color:#fff;font-size:16px;cursor:pointer}
+    .viewer-body{flex:1;display:flex;align-items:center;justify-content:center;padding:20px}
+    .viewer-body img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+    .viewer-footer{padding:20px;padding-bottom:max(20px,calc(env(safe-area-inset-bottom)+16px))}
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ============================================
+// DONNÉES
+// ============================================
+const RUBRIQUES = [
+  {id:'mobilier',name:'Mobilier',icon:'🪑',color:'#6366f1'},
+  {id:'accessoires',name:'Accessoires',icon:'🎭',color:'#ec4899'},
+  {id:'regie',name:'Régie extérieur',icon:'🏢',color:'#14b8a6'},
+  {id:'luminaires',name:'Luminaires',icon:'💡',color:'#f59e0b'},
+  {id:'deco',name:'Déco / Habillage',icon:'🖼️',color:'#8b5cf6'},
+  {id:'textiles',name:'Textiles',icon:'🧵',color:'#ef4444'},
+  {id:'graphiques',name:'Éléments graphiques',icon:'📋',color:'#3b82f6'},
+  {id:'consommables',name:'Consommables',icon:'📦',color:'#64748b'}
+];
+
+const STATUTS = [
+  {id:'a_sourcer',label:'À sourcer',color:'#64748b'},
+  {id:'en_recherche',label:'En recherche',color:'#f59e0b'},
+  {id:'valide',label:'Validé',color:'#3b82f6'},
+  {id:'reserve',label:'Réservé',color:'#6366f1'},
+  {id:'loue',label:'En location',color:'#ec4899'},
+  {id:'livre',label:'Livré',color:'#14b8a6'},
+  {id:'installe',label:'Installé',color:'#10b981'},
+  {id:'restitue',label:'Restitué',color:'#22c55e'}
+];
+
+const STATUTS_DECOR = [
+  {id:'a_preparer',label:'À préparer',color:'#64748b'},
+  {id:'en_cours',label:'En cours',color:'#f59e0b'},
+  {id:'pret',label:'Prêt',color:'#10b981'},
+  {id:'en_tournage',label:'En tournage',color:'#6366f1'},
+  {id:'termine',label:'Terminé',color:'#22c55e'}
+];
+
+const TYPES_PROJET = [
+  {id:'film',label:'Long-métrage',icon:'🎬'},
+  {id:'serie',label:'Série',icon:'📺'},
+  {id:'pub',label:'Publicité',icon:'📢'},
+  {id:'clip',label:'Clip',icon:'🎵'},
+  {id:'court',label:'Court-métrage',icon:'🎞️'}
+];
+
+// ============================================
+// ÉTAT GLOBAL
+// ============================================
+let state = {
+  data: JSON.parse(localStorage.getItem('decor-pro-data') || '{"projets":[],"loueurs":[]}'),
+  view: 'dashboard',
+  projet: null,
+  decor: null,
+  rubrique: null,
+  element: null,
+  loueur: null,
+  modal: null,
+  menu: false,
+  tab: 'rubriques',
+  viewerPhoto: null
+};
+
+const save = () => localStorage.setItem('decor-pro-data', JSON.stringify(state.data));
+const getStatut = id => STATUTS.find(s=>s.id===id) || STATUTS[0];
+const getStatutDecor = id => STATUTS_DECOR.find(s=>s.id===id) || STATUTS_DECOR[0];
+const getRubrique = id => RUBRIQUES.find(r=>r.id===id);
+const getType = id => TYPES_PROJET.find(t=>t.id===id);
+const getLoueur = id => state.data.loueurs.find(l=>l.id===id);
+const formatDate = d => d ? new Date(d).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'}) : '';
+
+const getStats = () => {
+  let elements=0,photos=0,locations=0,retards=0;
+  const today = new Date();
+  state.data.projets.forEach(p => p.decors?.forEach(d => {
+    elements += d.elements?.length||0;
+    d.elements?.forEach(e => {
+      photos += e.photos?.length||0;
+      if(['loue','livre'].includes(e.statut)){
+        locations++;
+        if(e.dateRetour && new Date(e.dateRetour)<today) retards++;
+      }
+    });
+  }));
+  return {
+    projets: state.data.projets.length,
+    decors: state.data.projets.reduce((s,p)=>s+(p.decors?.length||0),0),
+    elements,
+    loueurs: state.data.loueurs.length,
+    locations,
+    retards
+  };
+};
+
+// ============================================
+// RENDER
+// ============================================
+const render = () => {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    ${renderHeader()}
+    <main class="content">
+      ${state.view==='dashboard' ? renderDashboard() : ''}
+      ${state.view==='projet' ? renderProjet() : ''}
+      ${state.view==='decor' ? renderDecor() : ''}
+      ${state.view==='element' ? renderElement() : ''}
+      ${state.view==='loueurs' ? renderLoueurs() : ''}
+      ${state.view==='loueur' ? renderLoueur() : ''}
+    </main>
+    ${state.modal ? renderModal() : ''}
+    ${state.menu ? renderMenu() : ''}
+    ${state.viewerPhoto!==null ? renderViewer() : ''}
+  `;
+  attachEvents();
+};
+
+const renderHeader = () => `
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">🎬</div>
+      <span class="logo-text">Décor Pro</span>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="icon-btn" onclick="state.menu=true;render()">☰</button>
+    </div>
+  </header>
+`;
+
+const renderDashboard = () => {
+  const stats = getStats();
+  const projets = state.data.projets.slice().sort((a,b)=>new Date(b.updatedAt||0)-new Date(a.updatedAt||0));
+  
+  return `
+    <div class="stats">
+      <div class="stat"><div class="stat-val">${stats.projets}</div><div class="stat-lbl">Projets</div></div>
+      <div class="stat"><div class="stat-val">${stats.decors}</div><div class="stat-lbl">Décors</div></div>
+      <div class="stat"><div class="stat-val">${stats.elements}</div><div class="stat-lbl">Éléments</div></div>
+      <div class="stat"><div class="stat-val">${stats.loueurs}</div><div class="stat-lbl">Loueurs</div></div>
+    </div>
+    
+    ${stats.retards>0 ? `<div class="alert warning"><span style="font-size:20px">⚠️</span><div><strong style="color:#ef4444">${stats.retards} retour(s) en retard</strong></div></div>` : ''}
+    ${stats.locations>0 ? `<div class="alert info"><span style="font-size:20px">📦</span><div><strong style="color:#a5b4fc">${stats.locations} location(s) en cours</strong></div></div>` : ''}
+    
+    <div class="section">
+      <div class="section-title">Projets</div>
+      ${projets.length===0 ? `
+        <div class="empty">
+          <div class="empty-icon">🎬</div>
+          <div class="empty-title">Aucun projet</div>
+          <div class="empty-text">Créez votre premier projet</div>
+        </div>
+      ` : `
+        <div class="list">
+          ${projets.map(p => {
+            const type = getType(p.type);
+            return `
+              <div class="list-item" data-action="openProjet" data-id="${p.id}">
+                <span style="font-size:28px">${type?.icon||'📁'}</span>
+                <div style="flex:1">
+                  <div style="font-weight:600;color:#f1f5f9">${p.nom}</div>
+                  <div style="font-size:13px;color:#64748b">${p.decors?.length||0} décor(s) ${p.production?'• '+p.production:''}</div>
+                </div>
+                <span style="color:#64748b">›</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `}
+    </div>
+    <button class="fab" data-action="openModal" data-modal="new-projet">+</button>
+  `;
+};
+
+const renderProjet = () => {
+  const p = state.projet;
+  if(!p) return '';
+  const type = getType(p.type);
+  
+  return `
+    <button class="back-btn" data-action="goBack">← Tableau de bord</button>
+    <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px">
+      <span style="font-size:32px">${type?.icon||'📁'}</span>
+      <div>
+        <h1 class="page-title">${p.nom}</h1>
+        <p class="page-meta">${type?.label||'Projet'} ${p.production?'• '+p.production:''}</p>
+      </div>
+    </div>
+    
+    ${(p.realisateur||p.chefDeco||p.dateDebut)?`
+      <div class="info-box">
+        ${p.realisateur?`<div class="info-row"><span class="info-lbl">Réalisateur</span><span class="info-val">${p.realisateur}</span></div>`:''}
+        ${p.chefDeco?`<div class="info-row"><span class="info-lbl">Chef déco</span><span class="info-val">${p.chefDeco}</span></div>`:''}
+        ${p.dateDebut?`<div class="info-row"><span class="info-lbl">Dates</span><span class="info-val">${formatDate(p.dateDebut)} → ${formatDate(p.dateFin)}</span></div>`:''}
+      </div>
+    `:''}
+    
+    <div class="action-bar">
+      <button class="action-btn" data-action="openModal" data-modal="edit-projet">✏️ Modifier</button>
+      <button class="action-btn danger" data-action="deleteProjet" style="flex:0;padding:12px 14px">🗑️</button>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">Décors (${p.decors?.length||0})</div>
+      ${!p.decors?.length ? `
+        <div class="empty">
+          <div class="empty-icon">🎭</div>
+          <div class="empty-title">Aucun décor</div>
+          <div class="empty-text">Ajoutez votre premier décor</div>
+        </div>
+      ` : `
+        <div class="list">
+          ${p.decors.map(d => {
+            const st = getStatutDecor(d.statut);
+            return `
+              <div class="list-item" data-action="openDecor" data-id="${d.id}">
+                <span style="font-size:26px">${d.interieur?'🏠':'🌳'}</span>
+                <div style="flex:1">
+                  <div style="font-weight:600;color:#f1f5f9;margin-bottom:4px">${d.nom}</div>
+                  <span class="badge" style="background:${st.color}20;color:${st.color}">${st.label}</span>
+                  <span style="font-size:12px;color:#64748b;margin-left:8px">${d.elements?.length||0} éléments</span>
+                </div>
+                <span style="color:#64748b">›</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `}
+    </div>
+    <button class="fab" data-action="openModal" data-modal="new-decor">+</button>
+  `;
+};
+
+const renderDecor = () => {
+  const d = state.decor;
+  if(!d) return '';
+  const st = getStatutDecor(d.statut);
+  
+  let content = '';
+  if(state.tab==='rubriques'){
+    content = `
+      <div class="list">
+        ${RUBRIQUES.map(r => {
+          const els = d.elements?.filter(e=>e.rubrique===r.id) || [];
+          return `
+            <div class="list-item" data-action="openRubrique" data-id="${r.id}">
+              <div class="rub-icon" style="background:${r.color}15">${r.icon}</div>
+              <div style="flex:1">
+                <div style="font-weight:600;color:#f1f5f9">${r.name}</div>
+                <div style="font-size:13px;color:#64748b">${els.length} élément(s)</div>
+              </div>
+              <span style="color:#64748b">›</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  } else if(state.tab==='infos'){
+    content = `
+      <div class="info-box">
+        <div class="info-row"><span class="info-lbl">Type</span><span class="info-val">${d.interieur?'Intérieur':'Extérieur'} • ${d.studio?'Studio':'Naturel'}</span></div>
+        ${d.adresse?`<div class="info-row"><span class="info-lbl">Adresse</span><span class="info-val">${d.adresse}</span></div>`:''}
+        ${d.dateInstallation?`<div class="info-row"><span class="info-lbl">Installation</span><span class="info-val">${formatDate(d.dateInstallation)}</span></div>`:''}
+        ${d.dateTournage?`<div class="info-row"><span class="info-lbl">Tournage</span><span class="info-val">${formatDate(d.dateTournage)}</span></div>`:''}
+        ${d.notes?`<div style="padding-top:12px"><span class="info-lbl">Notes</span><p style="color:#94a3b8;margin-top:6px;line-height:1.5">${d.notes}</p></div>`:''}
+      </div>
+      <div class="action-bar">
+        <button class="action-btn" data-action="openModal" data-modal="edit-decor">✏️ Modifier</button>
+        <button class="action-btn danger" data-action="deleteDecor" style="flex:0;padding:12px 14px">🗑️</button>
+      </div>
+    `;
+  } else if(state.tab==='photos'){
+    content = `
+      <div class="dropzone" data-action="addDecorPhoto">
+        <div style="font-size:32px;margin-bottom:8px">📸</div>
+        <div style="font-weight:600;color:#f1f5f9">Ajouter des photos</div>
+      </div>
+      ${d.photos?.length ? `<div class="photo-grid">${d.photos.map((ph,i)=>`<div class="photo-item" data-action="viewPhoto" data-idx="${i}" data-type="decor"><img src="${ph.data}"></div>`).join('')}</div>` : ''}
+    `;
+  }
+  
+  return `
+    <button class="back-btn" data-action="goBack">← ${state.projet.nom}</button>
+    <div class="title-row">
+      <h1 class="page-title">${d.nom}</h1>
+      <span class="badge" style="background:${st.color}20;color:${st.color}">${st.label}</span>
+    </div>
+    ${d.adresse?`<p class="page-meta">📍 ${d.adresse}</p>`:''}
+    
+    <div class="tabs">
+      <button class="tab ${state.tab==='rubriques'?'active':''}" data-action="setTab" data-tab="rubriques">Rubriques</button>
+      <button class="tab ${state.tab==='infos'?'active':''}" data-action="setTab" data-tab="infos">Infos</button>
+      <button class="tab ${state.tab==='photos'?'active':''}" data-action="setTab" data-tab="photos">Photos</button>
+    </div>
+    
+    ${content}
+    <button class="fab" data-action="openModal" data-modal="new-element">+</button>
+  `;
+};
+
+const renderElement = () => {
+  const e = state.element;
+  if(!e) return '';
+  const st = getStatut(e.statut);
+  const rub = getRubrique(e.rubrique);
+  const loueur = e.loueurId ? getLoueur(e.loueurId) : null;
+  
+  return `
+    <button class="back-btn" data-action="goBack">← ${state.decor.nom}</button>
+    
+    ${e.photos?.length ? `
+      <div class="photo-main"><img src="${e.photos[0].data}"></div>
+      ${e.photos.length>1 ? `<div class="photo-thumbs">${e.photos.slice(1).map((ph,i)=>`<div class="photo-thumb" data-action="viewPhoto" data-idx="${i+1}" data-type="element"><img src="${ph.data}"></div>`).join('')}<div class="photo-thumb" style="background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer" data-action="addElementPhoto">+</div></div>` : ''}
+    ` : `
+      <div class="photo-main" style="cursor:pointer" data-action="addElementPhoto">
+        <div style="text-align:center"><div style="font-size:40px;margin-bottom:8px;opacity:0.5">📷</div><div style="color:#64748b">Ajouter une photo</div></div>
+      </div>
+    `}
+    
+    <h1 class="page-title">${e.nom}</h1>
+    ${rub?`<span class="chip">${rub.icon} ${rub.name}</span>`:''}
+    
+    <div class="input-group" style="margin-top:16px">
+      <label class="label">Statut</label>
+      <select class="select" id="statut-select" style="background:${st.color}20;color:${st.color};border-color:${st.color}40;font-weight:600">
+        ${STATUTS.map(s=>`<option value="${s.id}" ${s.id===e.statut?'selected':''}>${s.label}</option>`).join('')}
+      </select>
+    </div>
+    
+    <div class="info-box">
+      ${e.description?`<div style="margin-bottom:12px"><span class="info-lbl">Description</span><p style="color:#e2e8f0;margin-top:4px;line-height:1.5">${e.description}</p></div>`:''}
+      ${e.dimensions?`<div class="info-row"><span class="info-lbl">Dimensions</span><span class="info-val">${e.dimensions}</span></div>`:''}
+      ${e.couleur?`<div class="info-row"><span class="info-lbl">Couleur</span><span class="info-val">${e.couleur}</span></div>`:''}
+      ${e.matiere?`<div class="info-row"><span class="info-lbl">Matière</span><span class="info-val">${e.matiere}</span></div>`:''}
+      ${e.quantite?`<div class="info-row"><span class="info-lbl">Quantité</span><span class="info-val">${e.quantite}</span></div>`:''}
+    </div>
+    
+    ${loueur?`
+      <div class="info-box" style="background:rgba(99,102,241,0.1);border-color:rgba(99,102,241,0.2)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:24px">🏪</span>
+          <div style="flex:1">
+            <div style="font-weight:600;color:#a5b4fc">${loueur.nom}</div>
+            ${loueur.telephone?`<a href="tel:${loueur.telephone}" style="color:#64748b;font-size:13px">📞 ${loueur.telephone}</a>`:''}
+          </div>
+        </div>
+      </div>
+    `:''}
+    
+    ${(e.dateDepart||e.dateRetour||e.coutLocation)?`
+      <div class="info-box">
+        <div style="font-weight:600;margin-bottom:10px;color:#f1f5f9">📦 Location</div>
+        ${e.dateDepart?`<div class="info-row"><span class="info-lbl">Départ</span><span class="info-val">${formatDate(e.dateDepart)}</span></div>`:''}
+        ${e.dateRetour?`<div class="info-row"><span class="info-lbl">Retour prévu</span><span class="info-val">${formatDate(e.dateRetour)}</span></div>`:''}
+        ${e.coutLocation?`<div class="info-row"><span class="info-lbl">Coût</span><span class="info-val">${e.coutLocation} €</span></div>`:''}
+        ${e.caution?`<div class="info-row"><span class="info-lbl">Caution</span><span class="info-val">${e.caution} €</span></div>`:''}
+      </div>
+    `:''}
+    
+    ${e.notes?`<div class="info-box"><div style="font-weight:600;margin-bottom:8px;color:#f1f5f9">📝 Notes</div><p style="color:#94a3b8;line-height:1.5;margin:0">${e.notes}</p></div>`:''}
+    
+    <div style="display:flex;gap:8px;margin-top:20px">
+      <button class="btn btn-secondary" style="flex:1" data-action="openModal" data-modal="edit-element">✏️ Modifier</button>
+      <button class="btn btn-danger" style="width:auto;padding:14px" data-action="deleteElement">🗑️</button>
+    </div>
+  `;
+};
+
+const renderLoueurs = () => `
+  <button class="back-btn" data-action="goBack">← Tableau de bord</button>
+  <h1 class="page-title">🏪 Loueurs</h1>
+  <p class="page-meta">${state.data.loueurs.length} loueur(s)</p>
+  
+  ${!state.data.loueurs.length ? `
+    <div class="empty">
+      <div class="empty-icon">🏪</div>
+      <div class="empty-title">Aucun loueur</div>
+      <div class="empty-text">Ajoutez vos premiers loueurs</div>
+    </div>
+  ` : `
+    <div class="list">
+      ${state.data.loueurs.map(l=>`
+        <div class="list-item" data-action="openLoueur" data-id="${l.id}">
+          <div class="rub-icon" style="background:rgba(99,102,241,0.1)">🏪</div>
+          <div style="flex:1">
+            <div style="font-weight:600;color:#f1f5f9">${l.nom}</div>
+            ${l.specialite?`<div style="font-size:13px;color:#64748b">${l.specialite}</div>`:''}
+          </div>
+          ${l.telephone?`<a href="tel:${l.telephone}" onclick="event.stopPropagation()" style="width:40px;height:40px;background:rgba(16,185,129,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;text-decoration:none">📞</a>`:''}
+        </div>
+      `).join('')}
+    </div>
+  `}
+  <button class="fab" data-action="openModal" data-modal="new-loueur">+</button>
+`;
+
+const renderLoueur = () => {
+  const l = state.loueur;
+  if(!l) return '';
+  
+  return `
+    <button class="back-btn" data-action="goBack">← Loueurs</button>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+      <div class="rub-icon" style="background:rgba(99,102,241,0.15);width:56px;height:56px;font-size:28px">🏪</div>
+      <div>
+        <h1 class="page-title">${l.nom}</h1>
+        ${l.specialite?`<p class="page-meta" style="margin:0">${l.specialite}</p>`:''}
+      </div>
+    </div>
+    
+    <div class="action-bar">
+      ${l.telephone?`<a href="tel:${l.telephone}" class="action-btn" style="text-decoration:none">📞 Appeler</a>`:''}
+      ${l.email?`<a href="mailto:${l.email}" class="action-btn" style="text-decoration:none">✉️ Email</a>`:''}
+    </div>
+    
+    <div class="info-box">
+      ${l.contact?`<div class="info-row"><span class="info-lbl">Contact</span><span class="info-val">${l.contact}</span></div>`:''}
+      ${l.telephone?`<div class="info-row"><span class="info-lbl">Téléphone</span><span class="info-val">${l.telephone}</span></div>`:''}
+      ${l.email?`<div class="info-row"><span class="info-lbl">Email</span><span class="info-val">${l.email}</span></div>`:''}
+      ${l.adresse?`<div class="info-row"><span class="info-lbl">Adresse</span><span class="info-val">${l.adresse}</span></div>`:''}
+      ${l.horaires?`<div class="info-row"><span class="info-lbl">Horaires</span><span class="info-val">${l.horaires}</span></div>`:''}
+      ${l.conditions?`<div style="padding-top:12px"><span class="info-lbl">Conditions</span><p style="color:#94a3b8;margin-top:6px;line-height:1.5">${l.conditions}</p></div>`:''}
+    </div>
+    
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-secondary" style="flex:1" data-action="openModal" data-modal="edit-loueur">✏️ Modifier</button>
+      <button class="btn btn-danger" style="width:auto;padding:14px" data-action="deleteLoueur">🗑️</button>
+    </div>
+  `;
+};
+
+const renderMenu = () => `
+  <div class="menu-overlay" data-action="closeMenu"></div>
+  <div class="menu-panel show">
+    <h3 class="menu-title">⚙️ Menu</h3>
+    <div class="menu-item" data-action="goTo" data-view="dashboard">🏠 Tableau de bord</div>
+    <div class="menu-item" data-action="goTo" data-view="loueurs">🏪 Loueurs (${state.data.loueurs.length})</div>
+    <div style="margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1)">
+      <div style="font-size:12px;color:#64748b;margin-bottom:12px;text-transform:uppercase">Données</div>
+      <div class="menu-item" data-action="exportData">💾 Exporter sauvegarde</div>
+      <label class="menu-item" style="cursor:pointer">📥 Importer données<input type="file" accept=".json" style="display:none" id="import-input"></label>
+    </div>
+    <div style="margin-top:24px;padding:16px;background:rgba(99,102,241,0.1);border-radius:12px">
+      <div style="font-size:13px;color:#a5b4fc;font-weight:600;margin-bottom:6px">💡 Partage</div>
+      <div style="font-size:13px;color:#94a3b8;line-height:1.5">Exportez vos données et envoyez le fichier à vos collègues pour partager.</div>
+    </div>
+  </div>
+`;
+
+const renderViewer = () => {
+  let photos = [];
+  if(state.viewerType==='decor') photos = state.decor?.photos || [];
+  else if(state.viewerType==='element') photos = state.element?.photos || [];
+  const photo = photos[state.viewerPhoto];
+  if(!photo) return '';
+  
+  return `
+    <div class="viewer">
+      <div class="viewer-header">
+        <button class="viewer-close" data-action="closeViewer">✕ Fermer</button>
+        <span style="color:#64748b;font-size:14px">${state.viewerPhoto+1} / ${photos.length}</span>
+      </div>
+      <div class="viewer-body"><img src="${photo.data}"></div>
+      <div class="viewer-footer">
+        <button class="btn btn-danger" data-action="deletePhoto">🗑️ Supprimer</button>
+      </div>
+    </div>
+  `;
+};
+
+// MODALES
+const renderModal = () => {
+  let content = '';
+  
+  if(state.modal==='new-projet'){
+    content = `
+      <h2 class="modal-title">🎬 Nouveau projet</h2>
+      <div class="input-group"><label class="label">Nom du projet *</label><input class="input" id="f-nom" placeholder="Ex: Mon Film"></div>
+      <div class="input-group"><label class="label">Type</label><select class="select" id="f-type">${TYPES_PROJET.map(t=>`<option value="${t.id}">${t.icon} ${t.label}</option>`).join('')}</select></div>
+      <div class="input-group"><label class="label">Production</label><input class="input" id="f-production" placeholder="Nom de la production"></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Réalisateur</label><input class="input" id="f-realisateur"></div>
+        <div class="input-group"><label class="label">Chef déco</label><input class="input" id="f-chefDeco"></div>
+      </div>
+      <div class="row">
+        <div class="input-group"><label class="label">Date début</label><input type="date" class="input" id="f-dateDebut"></div>
+        <div class="input-group"><label class="label">Date fin</label><input type="date" class="input" id="f-dateFin"></div>
+      </div>
+      <button class="btn btn-primary" data-action="saveProjet">Créer le projet</button>
+      <button class="btn btn-secondary" data-action="closeModal">Annuler</button>
+    `;
+  } else if(state.modal==='new-decor'){
+    content = `
+      <h2 class="modal-title">🎭 Nouveau décor</h2>
+      <div class="input-group"><label class="label">Nom du décor *</label><input class="input" id="f-nom" placeholder="Ex: Appartement principal"></div>
+      <div class="input-group"><label class="label">Adresse / Lieu</label><input class="input" id="f-adresse"></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Type</label><select class="select" id="f-interieur"><option value="1">🏠 Intérieur</option><option value="0">🌳 Extérieur</option></select></div>
+        <div class="input-group"><label class="label">Nature</label><select class="select" id="f-studio"><option value="0">🏡 Naturel</option><option value="1">🎬 Studio</option></select></div>
+      </div>
+      <div class="input-group"><label class="label">Statut</label><select class="select" id="f-statut">${STATUTS_DECOR.map(s=>`<option value="${s.id}">${s.label}</option>`).join('')}</select></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Installation</label><input type="date" class="input" id="f-dateInstallation"></div>
+        <div class="input-group"><label class="label">Tournage</label><input type="date" class="input" id="f-dateTournage"></div>
+      </div>
+      <div class="input-group"><label class="label">Notes</label><textarea class="input textarea" id="f-notes" placeholder="Notes techniques..."></textarea></div>
+      <button class="btn btn-primary" data-action="saveDecor">Créer le décor</button>
+      <button class="btn btn-secondary" data-action="closeModal">Annuler</button>
+    `;
+  } else if(state.modal==='new-element'){
+    content = `
+      <h2 class="modal-title">📦 Nouvel élément</h2>
+      <div class="dropzone" id="photo-drop">
+        <div id="photo-preview"></div>
+        <div id="photo-placeholder"><div style="font-size:32px;margin-bottom:8px">📸</div><div style="font-weight:600;color:#f1f5f9">Ajouter une photo</div></div>
+        <input type="file" accept="image/*" capture="environment" style="display:none" id="photo-input">
+      </div>
+      <div class="input-group"><label class="label">Nom *</label><input class="input" id="f-nom" placeholder="Ex: Canapé velours"></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Rubrique</label><select class="select" id="f-rubrique">${RUBRIQUES.map(r=>`<option value="${r.id}" ${r.id===state.rubrique?.id?'selected':''}>${r.icon} ${r.name}</option>`).join('')}</select></div>
+        <div class="input-group"><label class="label">Statut</label><select class="select" id="f-statut">${STATUTS.map(s=>`<option value="${s.id}">${s.label}</option>`).join('')}</select></div>
+      </div>
+      <div class="input-group"><label class="label">Description</label><textarea class="input textarea" id="f-description"></textarea></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Dimensions</label><input class="input" id="f-dimensions" placeholder="L x l x H"></div>
+        <div class="input-group"><label class="label">Quantité</label><input type="number" class="input" id="f-quantite" value="1"></div>
+      </div>
+      <div class="row">
+        <div class="input-group"><label class="label">Couleur</label><input class="input" id="f-couleur"></div>
+        <div class="input-group"><label class="label">Matière</label><input class="input" id="f-matiere"></div>
+      </div>
+      ${state.data.loueurs.length?`<div class="input-group"><label class="label">Loueur</label><select class="select" id="f-loueurId"><option value="">Aucun</option>${state.data.loueurs.map(l=>`<option value="${l.id}">${l.nom}</option>`).join('')}</select></div>`:''}
+      <div class="row">
+        <div class="input-group"><label class="label">Coût location (€)</label><input type="number" class="input" id="f-coutLocation"></div>
+        <div class="input-group"><label class="label">Caution (€)</label><input type="number" class="input" id="f-caution"></div>
+      </div>
+      <div class="row">
+        <div class="input-group"><label class="label">Date départ</label><input type="date" class="input" id="f-dateDepart"></div>
+        <div class="input-group"><label class="label">Date retour</label><input type="date" class="input" id="f-dateRetour"></div>
+      </div>
+      <div class="input-group"><label class="label">Notes</label><textarea class="input textarea" id="f-notes"></textarea></div>
+      <button class="btn btn-primary" data-action="saveElement">Ajouter l'élément</button>
+      <button class="btn btn-secondary" data-action="closeModal">Annuler</button>
+    `;
+  } else if(state.modal==='new-loueur'){
+    content = `
+      <h2 class="modal-title">🏪 Nouveau loueur</h2>
+      <div class="input-group"><label class="label">Nom *</label><input class="input" id="f-nom" placeholder="Ex: Accessoires & Co"></div>
+      <div class="input-group"><label class="label">Spécialité</label><input class="input" id="f-specialite" placeholder="Ex: Mobilier années 50"></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Contact</label><input class="input" id="f-contact"></div>
+        <div class="input-group"><label class="label">Téléphone</label><input type="tel" class="input" id="f-telephone"></div>
+      </div>
+      <div class="input-group"><label class="label">Email</label><input type="email" class="input" id="f-email"></div>
+      <div class="input-group"><label class="label">Adresse</label><input class="input" id="f-adresse"></div>
+      <div class="input-group"><label class="label">Horaires</label><input class="input" id="f-horaires" placeholder="Lun-Ven 9h-18h"></div>
+      <div class="input-group"><label class="label">Conditions</label><textarea class="input textarea" id="f-conditions"></textarea></div>
+      <button class="btn btn-primary" data-action="saveLoueur">Ajouter le loueur</button>
+      <button class="btn btn-secondary" data-action="closeModal">Annuler</button>
+    `;
+  } else if(state.modal==='rubrique'){
+    const r = state.rubrique;
+    const els = state.decor?.elements?.filter(e=>e.rubrique===r?.id) || [];
+    content = `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+        <div class="rub-icon" style="background:${r?.color}15;width:48px;height:48px;font-size:26px">${r?.icon}</div>
+        <div><h2 style="font-size:20px;font-weight:700;color:#f1f5f9;margin:0">${r?.name}</h2><span style="font-size:14px;color:#64748b">${els.length} élément(s)</span></div>
+      </div>
+      ${!els.length ? `<div style="text-align:center;padding:40px"><div style="font-size:40px;margin-bottom:12px;opacity:0.5">📦</div><div style="color:#64748b">Aucun élément</div></div>` : `
+        <div class="list">
+          ${els.map(e=>{
+            const st = getStatut(e.statut);
+            return `
+              <div class="list-item" data-action="openElement" data-id="${e.id}">
+                ${e.photos?.length ? `<div style="width:48px;height:48px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="${e.photos[0].data}" style="width:100%;height:100%;object-fit:cover"></div>` : `<div style="width:48px;height:48px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center">📷</div>`}
+                <div style="flex:1;min-width:0">
+                  <div style="font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.nom}</div>
+                  <span class="badge" style="background:${st.color}20;color:${st.color};margin-top:4px">${st.label}</span>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `}
+      <button class="btn btn-primary" style="margin-top:20px" data-action="openModal" data-modal="new-element">➕ Ajouter un élément</button>
+    `;
+  }
+  
+  return `
+    <div class="modal-overlay" data-action="closeModal">
+      <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-handle"></div>
+        ${content}
+      </div>
+    </div>
+  `;
+};
+
+// ============================================
+// EVENTS
+// ============================================
+let photoData = null;
+
+const attachEvents = () => {
+  document.querySelectorAll('[data-action]').forEach(el => {
+    el.addEventListener('click', handleAction);
+  });
+  
+  const importInput = document.getElementById('import-input');
+  if(importInput) importInput.addEventListener('change', handleImport);
+  
+  const photoDrop = document.getElementById('photo-drop');
+  const photoInput = document.getElementById('photo-input');
+  if(photoDrop && photoInput){
+    photoDrop.addEventListener('click', () => photoInput.click());
+    photoInput.addEventListener('change', handlePhotoSelect);
+  }
+  
+  const statutSelect = document.getElementById('statut-select');
+  if(statutSelect){
+    statutSelect.addEventListener('change', (e) => {
+      state.element.statut = e.target.value;
+      const idx = state.decor.elements.findIndex(el=>el.id===state.element.id);
+      if(idx>-1) state.decor.elements[idx].statut = e.target.value;
+      save();
+      render();
+    });
+  }
+};
+
+const handleAction = (e) => {
+  const el = e.currentTarget;
+  const action = el.dataset.action;
+  
+  switch(action){
+    case 'openProjet':
+      state.projet = state.data.projets.find(p=>p.id===el.dataset.id);
+      state.view = 'projet';
+      break;
+    case 'openDecor':
+      state.decor = state.projet.decors.find(d=>d.id===el.dataset.id);
+      state.view = 'decor';
+      state.tab = 'rubriques';
+      break;
+    case 'openRubrique':
+      state.rubrique = RUBRIQUES.find(r=>r.id===el.dataset.id);
+      state.modal = 'rubrique';
+      break;
+    case 'openElement':
+      state.element = state.decor.elements.find(e=>e.id===el.dataset.id);
+      state.modal = null;
+      state.view = 'element';
+      break;
+    case 'openLoueur':
+      state.loueur = state.data.loueurs.find(l=>l.id===el.dataset.id);
+      state.view = 'loueur';
+      break;
+    case 'openModal':
+      state.modal = el.dataset.modal;
+      photoData = null;
+      break;
+    case 'closeModal':
+      state.modal = null;
+      photoData = null;
+      break;
+    case 'closeMenu':
+      state.menu = false;
+      break;
+    case 'setTab':
+      state.tab = el.dataset.tab;
+      break;
+    case 'goTo':
+      state.view = el.dataset.view;
+      state.menu = false;
+      break;
+    case 'goBack':
+      if(state.view==='element'){ state.view='decor'; state.element=null; }
+      else if(state.view==='decor'){ state.view='projet'; state.decor=null; }
+      else if(state.view==='projet'){ state.view='dashboard'; state.projet=null; }
+      else if(state.view==='loueur'){ state.view='loueurs'; state.loueur=null; }
+      else { state.view='dashboard'; }
+      break;
+    case 'saveProjet':
+      const nom = document.getElementById('f-nom').value.trim();
+      if(!nom) return;
+      const newProjet = {
+        id: Date.now().toString(),
+        nom,
+        type: document.getElementById('f-type').value,
+        production: document.getElementById('f-production').value,
+        realisateur: document.getElementById('f-realisateur').value,
+        chefDeco: document.getElementById('f-chefDeco').value,
+        dateDebut: document.getElementById('f-dateDebut').value,
+        dateFin: document.getElementById('f-dateFin').value,
+        decors: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      state.data.projets.push(newProjet);
+      save();
+      state.modal = null;
+      break;
+    case 'saveDecor':
+      const nomD = document.getElementById('f-nom').value.trim();
+      if(!nomD) return;
+      const newDecor = {
+        id: Date.now().toString(),
+        nom: nomD,
+        adresse: document.getElementById('f-adresse').value,
+        interieur: document.getElementById('f-interieur').value==='1',
+        studio: document.getElementById('f-studio').value==='1',
+        statut: document.getElementById('f-statut').value,
+        dateInstallation: document.getElementById('f-dateInstallation').value,
+        dateTournage: document.getElementById('f-dateTournage').value,
+        notes: document.getElementById('f-notes').value,
+        elements: [],
+        photos: []
+      };
+      state.projet.decors.push(newDecor);
+      state.projet.updatedAt = new Date().toISOString();
+      save();
+      state.modal = null;
+      break;
+    case 'saveElement':
+      const nomE = document.getElementById('f-nom').value.trim();
+      if(!nomE) return;
+      const newElement = {
+        id: Date.now().toString(),
+        nom: nomE,
+        rubrique: document.getElementById('f-rubrique').value,
+        statut: document.getElementById('f-statut').value,
+        description: document.getElementById('f-description').value,
+        dimensions: document.getElementById('f-dimensions').value,
+        quantite: document.getElementById('f-quantite').value,
+        couleur: document.getElementById('f-couleur').value,
+        matiere: document.getElementById('f-matiere').value,
+        loueurId: document.getElementById('f-loueurId')?.value || '',
+        coutLocation: document.getElementById('f-coutLocation').value,
+        caution: document.getElementById('f-caution').value,
+        dateDepart: document.getElementById('f-dateDepart').value,
+        dateRetour: document.getElementById('f-dateRetour').value,
+        notes: document.getElementById('f-notes').value,
+        photos: photoData ? [{data:photoData,name:'photo'}] : []
+      };
+      state.decor.elements.push(newElement);
+      state.projet.updatedAt = new Date().toISOString();
+      save();
+      state.modal = null;
+      photoData = null;
+      break;
+    case 'saveLoueur':
+      const nomL = document.getElementById('f-nom').value.trim();
+      if(!nomL) return;
+      const newLoueur = {
+        id: Date.now().toString(),
+        nom: nomL,
+        specialite: document.getElementById('f-specialite').value,
+        contact: document.getElementById('f-contact').value,
+        telephone: document.getElementById('f-telephone').value,
+        email: document.getElementById('f-email').value,
+        adresse: document.getElementById('f-adresse').value,
+        horaires: document.getElementById('f-horaires').value,
+        conditions: document.getElementById('f-conditions').value
+      };
+      state.data.loueurs.push(newLoueur);
+      save();
+      state.modal = null;
+      break;
+    case 'deleteProjet':
+      if(confirm('Supprimer ce projet ?')){
+        state.data.projets = state.data.projets.filter(p=>p.id!==state.projet.id);
+        save();
+        state.projet = null;
+        state.view = 'dashboard';
+      }
+      break;
+    case 'deleteDecor':
+      if(confirm('Supprimer ce décor ?')){
+        state.projet.decors = state.projet.decors.filter(d=>d.id!==state.decor.id);
+        save();
+        state.decor = null;
+        state.view = 'projet';
+      }
+      break;
+    case 'deleteElement':
+      if(confirm('Supprimer cet élément ?')){
+        state.decor.elements = state.decor.elements.filter(e=>e.id!==state.element.id);
+        save();
+        state.element = null;
+        state.view = 'decor';
+      }
+      break;
+    case 'deleteLoueur':
+      if(confirm('Supprimer ce loueur ?')){
+        state.data.loueurs = state.data.loueurs.filter(l=>l.id!==state.loueur.id);
+        save();
+        state.loueur = null;
+        state.view = 'loueurs';
+      }
+      break;
+    case 'viewPhoto':
+      state.viewerPhoto = parseInt(el.dataset.idx);
+      state.viewerType = el.dataset.type;
+      break;
+    case 'closeViewer':
+      state.viewerPhoto = null;
+      break;
+    case 'deletePhoto':
+      if(confirm('Supprimer cette photo ?')){
+        if(state.viewerType==='decor') state.decor.photos.splice(state.viewerPhoto, 1);
+        else if(state.viewerType==='element') state.element.photos.splice(state.viewerPhoto, 1);
+        save();
+        state.viewerPhoto = null;
+      }
+      break;
+    case 'addElementPhoto':
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.capture = 'environment';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if(file){
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            if(!state.element.photos) state.element.photos = [];
+            state.element.photos.push({data:ev.target.result,name:file.name});
+            save();
+            render();
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+      break;
+    case 'exportData':
+      const dataStr = JSON.stringify(state.data, null, 2);
+      const blob = new Blob([dataStr], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `decor-pro-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      state.menu = false;
+      break;
+  }
+  render();
+};
+
+const handlePhotoSelect = (e) => {
+  const file = e.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      photoData = ev.target.result;
+      document.getElementById('photo-preview').innerHTML = `<img src="${photoData}" style="width:80px;height:80px;object-fit:cover;border-radius:10px">`;
+      document.getElementById('photo-placeholder').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+const handleImport = (e) => {
+  const file = e.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const imported = JSON.parse(ev.target.result);
+        if(imported.projets){
+          state.data = imported;
+          save();
+          state.menu = false;
+          alert('Données importées !');
+          render();
+        }
+      } catch(err) {
+        alert('Fichier invalide');
+      }
+    };
+    reader.readAsText(file);
+  }
+};
+
+// Init
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js');
+}
+render();
+</script>
+</body>
+</html>
+-action="viewPhoto" data-idx="${i}" data-type="element"><img src="${ph.data}"></div>`).join('')}
+        <div class="photo-thumb" style="background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer" data-action="addElementPhoto">+</div>
+      </div>
+    ` : `
+      <div class="photo-main" style="cursor:pointer" data-action="addElementPhoto">
+        <div style="text-align:center"><div style="font-size:40px;margin-bottom:8px;opacity:0.5">📷</div><div style="color:#64748b">Ajouter des photos</div></div>
+      </div>
+    `}
+    
+    <h1 class="page-title">${e.nom}</h1>
+    <div style="margin-bottom:16px">
+      ${rub?`<span class="chip">${rub.icon} ${rub.name}</span>`:''}
+      ${e.role?`<span class="chip">👤 ${e.role}</span>`:''}
+      ${e.dateJeu?`<span class="chip">📅 ${formatDate(e.dateJeu)}</span>`:''}
+    </div>
+    
+    <div class="input-group">
+      <label class="label">Statut</label>
+      <select class="select" id="statut-select" style="background:${st.color}20;color:${st.color};border-color:${st.color}40;font-weight:600">
+        ${STATUTS.map(s=>`<option value="${s.id}" ${s.id===e.statut?'selected':''}>${s.label}</option>`).join('')}
+      </select>
+    </div>
+    
+    <div class="info-box">
+      ${e.description?`<div style="margin-bottom:12px"><span class="info-lbl">Description</span><p style="color:#e2e8f0;margin-top:4px;line-height:1.5">${e.description}</p></div>`:''}
+      ${e.dimensions?`<div class="info-row"><span class="info-lbl">Dimensions</span><span class="info-val">${e.dimensions}</span></div>`:''}
+      ${e.couleur?`<div class="info-row"><span class="info-lbl">Couleur</span><span class="info-val">${e.couleur}</span></div>`:''}
+      ${e.matiere?`<div class="info-row"><span class="info-lbl">Matière</span><span class="info-val">${e.matiere}</span></div>`:''}
+      ${e.quantite?`<div class="info-row"><span class="info-lbl">Quantité</span><span class="info-val">${e.quantite}</span></div>`:''}
+    </div>
+    
+    ${loueur?`
+      <div class="info-box" style="background:rgba(99,102,241,0.1);border-color:rgba(99,102,241,0.2)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:24px">🏪</span>
+          <div style="flex:1">
+            <div style="font-weight:600;color:#a5b4fc">${loueur.nom}</div>
+            ${loueur.telephone?`<a href="tel:${loueur.telephone}" style="color:#64748b;font-size:13px">📞 ${loueur.telephone}</a>`:''}
+          </div>
+        </div>
+      </div>
+    `:''}
+    
+    ${(e.dateDepart||e.dateRetour||e.coutLocation)?`
+      <div class="info-box">
+        <div style="font-weight:600;margin-bottom:10px;color:#f1f5f9">📦 Location</div>
+        ${e.dateDepart?`<div class="info-row"><span class="info-lbl">Départ</span><span class="info-val">${formatDate(e.dateDepart)}</span></div>`:''}
+        ${e.dateRetour?`<div class="info-row"><span class="info-lbl">Retour prévu</span><span class="info-val">${formatDate(e.dateRetour)}</span></div>`:''}
+        ${e.coutLocation?`<div class="info-row"><span class="info-lbl">Coût</span><span class="info-val">${formatMoney(e.coutLocation)}</span></div>`:''}
+        ${e.caution?`<div class="info-row"><span class="info-lbl">Caution</span><span class="info-val">${formatMoney(e.caution)}</span></div>`:''}
+      </div>
+    `:''}
+    
+    <div style="display:flex;gap:8px;margin-top:20px">
+      <button class="btn btn-secondary" style="flex:1" data-action="openModal" data-modal="edit-element">✏️ Modifier</button>
+      <button class="btn btn-danger" style="width:auto;padding:14px" data-action="deleteElement">🗑️</button>
+    </div>
+  `;
+};
+
+const renderAccessoires = () => {
+  const items = getFilteredAccessoires();
+  const roles = getAllRoles();
+  
+  return `
+    <button class="back-btn" data-action="goBack">← ${state.projet?.nom || 'Retour'}</button>
+    <h1 class="page-title">🎭 Accessoires de jeu</h1>
+    <p class="page-meta">${items.length} accessoire(s)</p>
+    
+    <div class="search-box">
+      <input type="text" placeholder="Rechercher..." id="search-input" value="${state.searchQuery}">
+    </div>
+    
+    <div class="filter-bar">
+      <button class="filter-btn ${!state.filterRole?'active':''}" data-action="filterRole" data-role="">Tous</button>
+      ${roles.map(r=>`<button class="filter-btn ${state.filterRole===r?'active':''}" data-action="filterRole" data-role="${r}">👤 ${r}</button>`).join('')}
+    </div>
+    
+    <div class="input-group">
+      <label class="label">Filtrer par date de jeu</label>
+      <input type="date" class="input" id="filter-date" value="${state.filterDate}">
+    </div>
+    
+    ${items.length===0 ? `
+      <div class="empty">
+        <div class="empty-icon">🎭</div>
+        <div class="empty-title">Aucun accessoire</div>
+        <div class="empty-text">Ajoutez des accessoires de jeu dans vos décors</div>
+      </div>
+    ` : `
+      <div class="list">
+        ${items.map(e => {
+          const st = getStatut(e.statut);
+          return `
+            <div class="list-item" data-action="openAccessoire" data-eid="${e.id}" data-did="${e.decor.id}" data-pid="${e.projet.id}">
+              ${e.photos?.length ? `<div style="width:48px;height:48px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="${e.photos[0].data}" style="width:100%;height:100%;object-fit:cover"></div>` : `<div style="width:48px;height:48px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center">🎭</div>`}
+              <div style="flex:1;min-width:0">
+                <div style="font-weight:600;color:#f1f5f9;margin-bottom:4px">${e.nom}</div>
+                <div style="font-size:12px;color:#64748b">
+                  ${e.role?`👤 ${e.role}`:''} ${e.dateJeu?`• 📅 ${formatDate(e.dateJeu)}`:''}
+                </div>
+                <span class="badge" style="background:${st.color}20;color:${st.color};margin-top:4px">${st.label}</span>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `}
+  `;
+};
+
+const renderDepenses = () => {
+  const deps = getDepenses();
+  const total = getTotalDepenses();
+  
+  return `
+    <button class="back-btn" data-action="goBack">← ${state.projet?.nom || 'Retour'}</button>
+    <h1 class="page-title">💰 Dépenses</h1>
+    <p class="page-meta">${deps.length} dépense(s)</p>
+    
+    <div class="total-box">
+      <span class="total-label">Total</span>
+      <span class="total-value">${formatMoney(total)}</span>
+    </div>
+    
+    <div class="filter-bar">
+      <button class="filter-btn ${state.depenseSort==='date'?'active':''}" data-action="sortDepenses" data-sort="date">📅 Date</button>
+      <button class="filter-btn ${state.depenseSort==='montant'?'active':''}" data-action="sortDepenses" data-sort="montant">💶 Montant</button>
+      <button class="filter-btn ${state.depenseSort==='type'?'active':''}" data-action="sortDepenses" data-sort="type">📋 Type</button>
+    </div>
+    
+    ${deps.length===0 ? `
+      <div class="empty">
+        <div class="empty-icon">💰</div>
+        <div class="empty-title">Aucune dépense</div>
+        <div class="empty-text">Ajoutez vos premières dépenses</div>
+      </div>
+    ` : `
+      ${deps.map(d => {
+        const typeInfo = TYPES_DEPENSE.find(t=>t.id===d.type) || TYPES_DEPENSE[4];
+        return `
+          <div class="expense-item" data-action="openModal" data-modal="edit-depense" data-depid="${d.id}">
+            <div class="expense-info">
+              <div class="expense-name">${typeInfo.icon} ${d.description || typeInfo.label}</div>
+              <div class="expense-meta">${formatDate(d.date)} ${d.fournisseur?'• '+d.fournisseur:''}</div>
+            </div>
+            <div class="expense-amount">${formatMoney(d.montant)}</div>
+          </div>
+        `;
+      }).join('')}
+    `}
+    
+    <button class="fab" data-action="openModal" data-modal="new-depense">+</button>
+  `;
+};
+
+const renderPrint = () => {
+  const d = state.decor;
+  if(!d) return '';
+  
+  const allPhotos = [];
+  d.elements?.forEach(e => {
+    e.photos?.forEach(ph => allPhotos.push({...ph, element:e}));
+  });
+  
+  return `
+    <div class="print-header">
+      <h1>${state.projet.nom} - ${d.nom}</h1>
+      <p>${allPhotos.length} photos • ${d.elements?.length||0} éléments</p>
+    </div>
+    
+    <div class="action-bar" style="margin-bottom:20px">
+      <button class="action-btn" data-action="goBack">← Retour</button>
+      <button class="action-btn primary" onclick="window.print()">🖨️ Imprimer</button>
+    </div>
+    
+    <div class="print-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      ${allPhotos.map(ph => `
+        <div class="print-item" style="background:rgba(255,255,255,0.04);border-radius:10px;padding:8px;text-align:center">
+          <img src="${ph.data}" style="width:100%;height:100px;object-fit:cover;border-radius:6px">
+          <div class="name" style="font-size:11px;margin-top:6px;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ph.element.nom}</div>
+          <div class="info" style="font-size:9px;color:#64748b">${getRubrique(ph.element.rubrique)?.name||''}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+};
+
+const renderLoueurs = () => `
+  <button class="back-btn" data-action="goBack">← Tableau de bord</button>
+  <h1 class="page-title">🏪 Loueurs</h1>
+  <p class="page-meta">${state.data.loueurs.length} loueur(s)</p>
+  
+  ${!state.data.loueurs.length ? `
+    <div class="empty">
+      <div class="empty-icon">🏪</div>
+      <div class="empty-title">Aucun loueur</div>
+    </div>
+  ` : `
+    <div class="list">
+      ${state.data.loueurs.map(l=>`
+        <div class="list-item" data-action="openLoueur" data-id="${l.id}">
+          <div class="rub-icon" style="background:rgba(99,102,241,0.1)">🏪</div>
+          <div style="flex:1">
+            <div style="font-weight:600;color:#f1f5f9">${l.nom}</div>
+            ${l.specialite?`<div style="font-size:13px;color:#64748b">${l.specialite}</div>`:''}
+          </div>
+          ${l.telephone?`<a href="tel:${l.telephone}" onclick="event.stopPropagation()" style="width:40px;height:40px;background:rgba(16,185,129,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center">📞</a>`:''}
+        </div>
+      `).join('')}
+    </div>
+  `}
+  <button class="fab" data-action="openModal" data-modal="new-loueur">+</button>
+`;
+
+const renderLoueur = () => {
+  const l = state.loueur;
+  if(!l) return '';
+  
+  return `
+    <button class="back-btn" data-action="goBack">← Loueurs</button>
+    <h1 class="page-title">🏪 ${l.nom}</h1>
+    ${l.specialite?`<p class="page-meta">${l.specialite}</p>`:''}
+    
+    <div class="action-bar">
+      ${l.telephone?`<a href="tel:${l.telephone}" class="action-btn primary" style="text-decoration:none">📞 Appeler</a>`:''}
+      ${l.email?`<a href="mailto:${l.email}" class="action-btn" style="text-decoration:none">✉️ Email</a>`:''}
+    </div>
+    
+    <div class="info-box">
+      ${l.contact?`<div class="info-row"><span class="info-lbl">Contact</span><span class="info-val">${l.contact}</span></div>`:''}
+      ${l.telephone?`<div class="info-row"><span class="info-lbl">Téléphone</span><span class="info-val">${l.telephone}</span></div>`:''}
+      ${l.adresse?`<div class="info-row"><span class="info-lbl">Adresse</span><span class="info-val">${l.adresse}</span></div>`:''}
+    </div>
+    
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-secondary" style="flex:1" data-action="openModal" data-modal="edit-loueur">✏️ Modifier</button>
+      <button class="btn btn-danger" style="width:auto;padding:14px" data-action="deleteLoueur">🗑️</button>
+    </div>
+  `;
+};
+
+const renderMenu = () => `
+  <div class="menu-overlay" data-action="closeMenu"></div>
+  <div class="menu-panel show">
+    <h3 class="menu-title">⚙️ Menu</h3>
+    <div class="menu-item" data-action="goTo" data-view="dashboard">🏠 Tableau de bord</div>
+    <div class="menu-item" data-action="goTo" data-view="loueurs">🏪 Loueurs</div>
+    <div class="menu-item" data-action="goToDepensesGlobal">💰 Toutes les dépenses</div>
+    <div style="margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1)">
+      <div style="font-size:12px;color:#64748b;margin-bottom:12px;text-transform:uppercase">Données</div>
+      <div class="menu-item" data-action="exportData">💾 Exporter</div>
+      <label class="menu-item" style="cursor:pointer">📥 Importer<input type="file" accept=".json" style="display:none" id="import-input"></label>
+    </div>
+  </div>
+`;
+
+const renderViewer = () => {
+  let photos = [];
+  if(state.viewerType==='decor') photos = state.decor?.photos || [];
+  else if(state.viewerType==='element') photos = state.element?.photos || [];
+  const photo = photos[state.viewerPhoto];
+  if(!photo) return '';
+  
+  return `
+    <div class="viewer">
+      <div class="viewer-header">
+        <button class="viewer-close" data-action="closeViewer">✕ Fermer</button>
+        <span style="color:#64748b;font-size:14px">${state.viewerPhoto+1} / ${photos.length}</span>
+      </div>
+      <div class="viewer-body"><img src="${photo.data}"></div>
+      <div class="viewer-footer">
+        <button class="btn btn-danger" data-action="deletePhoto">🗑️ Supprimer cette photo</button>
+      </div>
+    </div>
+  `;
+};
+
+// ============================================
+// MODALES
+// ============================================
+const renderModal = () => {
+  let content = '';
+  
+  if(state.modal==='new-projet'){
+    content = `
+      <h2 class="modal-title">🎬 Nouveau projet</h2>
+      <div class="input-group"><label class="label">Nom *</label><input class="input" id="f-nom" placeholder="Ex: Mon Film"></div>
+      <div class="input-group"><label class="label">Type</label><select class="select" id="f-type">${TYPES_PROJET.map(t=>`<option value="${t.id}">${t.icon} ${t.label}</option>`).join('')}</select></div>
+      <div class="input-group"><label class="label">Production</label><input class="input" id="f-production"></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Réalisateur</label><input class="input" id="f-realisateur"></div>
+        <div class="input-group"><label class="label">Chef déco</label><input class="input" id="f-chefDeco"></div>
+      </div>
+      <div class="row">
+        <div class="input-group"><label class="label">Début</label><input type="date" class="input" id="f-dateDebut"></div>
+        <div class="input-group"><label class="label">Fin</label><input type="date" class="input" id="f-dateFin"></div>
+      </div>
+      <button class="btn btn-primary" data-action="saveProjet">Créer</button>
+      <button class="btn btn-secondary" data-action="closeModal">Annuler</button>
+    `;
+  } else if(state.modal==='new-decor'){
+    content = `
+      <h2 class="modal-title">🎭 Nouveau décor</h2>
+      <div class="input-group"><label class="label">Nom *</label><input class="input" id="f-nom" placeholder="Ex: Appartement"></div>
+      <div class="input-group"><label class="label">Adresse</label><input class="input" id="f-adresse"></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Type</label><select class="select" id="f-interieur"><option value="1">🏠 Intérieur</option><option value="0">🌳 Extérieur</option></select></div>
+        <div class="input-group"><label class="label">Nature</label><select class="select" id="f-studio"><option value="0">🏡 Naturel</option><option value="1">🎬 Studio</option></select></div>
+      </div>
+      <div class="input-group"><label class="label">Statut</label><select class="select" id="f-statut">${STATUTS_DECOR.map(s=>`<option value="${s.id}">${s.label}</option>`).join('')}</select></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Installation</label><input type="date" class="input" id="f-dateInstallation"></div>
+        <div class="input-group"><label class="label">Tournage</label><input type="date" class="input" id="f-dateTournage"></div>
+      </div>
+      <button class="btn btn-primary" data-action="saveDecor">Créer</button>
+      <button class="btn btn-secondary" data-action="closeModal">Annuler</button>
+    `;
+  } else if(state.modal==='new-element'){
+    content = `
+      <h2 class="modal-title">📦 Nouvel élément</h2>
+      <div class="dropzone" id="photo-drop">
+        <div id="photo-preview" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center"></div>
+        <div id="photo-placeholder"><div style="font-size:32px;margin-bottom:8px">📸</div><div style="font-weight:600;color:#f1f5f9">Ajouter des photos</div><div style="font-size:12px;color:#64748b;margin-top:4px">Plusieurs photos possibles</div></div>
+        <input type="file" accept="image/*" multiple capture="environment" style="display:none" id="photo-input">
+      </div>
+      <div class="input-group"><label class="label">Nom *</label><input class="input" id="f-nom" placeholder="Ex: Canapé velours"></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Rubrique</label><select class="select" id="f-rubrique">${RUBRIQUES.map(r=>`<option value="${r.id}" ${r.id===state.rubrique?.id?'selected':''}>${r.icon} ${r.name}</option>`).join('')}</select></div>
+        <div class="input-group"><label class="label">Statut</label><select class="select" id="f-statut">${STATUTS.map(s=>`<option value="${s.id}">${s.label}</option>`).join('')}</select></div>
+      </div>
+      <div class="input-group"><label class="label">Description</label><textarea class="input textarea" id="f-description"></textarea></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Dimensions</label><input class="input" id="f-dimensions" placeholder="L x l x H"></div>
+        <div class="input-group"><label class="label">Quantité</label><input type="number" class="input" id="f-quantite" value="1"></div>
+      </div>
+      <div class="row">
+        <div class="input-group"><label class="label">Couleur</label><input class="input" id="f-couleur"></div>
+        <div class="input-group"><label class="label">Matière</label><input class="input" id="f-matiere"></div>
+      </div>
+      <div style="background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.2);border-radius:12px;padding:14px;margin-bottom:16px">
+        <div style="font-weight:600;color:#ec4899;margin-bottom:10px">🎭 Accessoire de jeu</div>
+        <div class="row">
+          <div class="input-group" style="margin:0"><label class="label">Rôle / Personnage</label><input class="input" id="f-role" placeholder="Ex: Marie"></div>
+          <div class="input-group" style="margin:0"><label class="label">Date de jeu</label><input type="date" class="input" id="f-dateJeu"></div>
+        </div>
+      </div>
+      ${state.data.loueurs.length?`<div class="input-group"><label class="label">Loueur</label><select class="select" id="f-loueurId"><option value="">Aucun</option>${state.data.loueurs.map(l=>`<option value="${l.id}">${l.nom}</option>`).join('')}</select></div>`:''}
+      <div class="row">
+        <div class="input-group"><label class="label">Coût (€)</label><input type="number" class="input" id="f-coutLocation"></div>
+        <div class="input-group"><label class="label">Caution (€)</label><input type="number" class="input" id="f-caution"></div>
+      </div>
+      <div class="row">
+        <div class="input-group"><label class="label">Départ</label><input type="date" class="input" id="f-dateDepart"></div>
+        <div class="input-group"><label class="label">Retour</label><input type="date" class="input" id="f-dateRetour"></div>
+      </div>
+      <div class="input-group"><label class="label">Notes</label><textarea class="input textarea" id="f-notes"></textarea></div>
+      <button class="btn btn-primary" data-action="saveElement">Ajouter</button>
+      <button class="btn btn-secondary" data-action="closeModal">Annuler</button>
+    `;
+  } else if(state.modal==='new-loueur'){
+    content = `
+      <h2 class="modal-title">🏪 Nouveau loueur</h2>
+      <div class="input-group"><label class="label">Nom *</label><input class="input" id="f-nom"></div>
+      <div class="input-group"><label class="label">Spécialité</label><input class="input" id="f-specialite"></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Contact</label><input class="input" id="f-contact"></div>
+        <div class="input-group"><label class="label">Téléphone</label><input type="tel" class="input" id="f-telephone"></div>
+      </div>
+      <div class="input-group"><label class="label">Email</label><input type="email" class="input" id="f-email"></div>
+      <div class="input-group"><label class="label">Adresse</label><input class="input" id="f-adresse"></div>
+      <button class="btn btn-primary" data-action="saveLoueur">Ajouter</button>
+      <button class="btn btn-secondary" data-action="closeModal">Annuler</button>
+    `;
+  } else if(state.modal==='new-depense'){
+    content = `
+      <h2 class="modal-title">💰 Nouvelle dépense</h2>
+      <div class="input-group"><label class="label">Type</label><select class="select" id="f-type">${TYPES_DEPENSE.map(t=>`<option value="${t.id}">${t.icon} ${t.label}</option>`).join('')}</select></div>
+      <div class="input-group"><label class="label">Description</label><input class="input" id="f-description" placeholder="Ex: Location canapé"></div>
+      <div class="row">
+        <div class="input-group"><label class="label">Montant (€) *</label><input type="number" step="0.01" class="input" id="f-montant"></div>
+        <div class="input-group"><label class="label">Date</label><input type="date" class="input" id="f-date" value="${new Date().toISOString().split('T')[0]}"></div>
+      </div>
+      <div class="input-group"><label class="label">Fournisseur / Loueur</label><input class="input" id="f-fournisseur"></div>
+      <div class="input-group"><label class="label">Notes</label><textarea class="input textarea" id="f-notes"></textarea></div>
+      <button class="btn btn-primary" data-action="saveDepense">Ajouter</button>
+      <button class="btn btn-secondary" data-action="closeModal">Annuler</button>
+    `;
+  } else if(state.modal==='rubrique'){
+    const r = state.rubrique;
+    const els = state.decor?.elements?.filter(e=>e.rubrique===r?.id) || [];
+    content = `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+        <div class="rub-icon" style="background:${r?.color}15;width:48px;height:48px;font-size:26px">${r?.icon}</div>
+        <div><h2 style="font-size:20px;font-weight:700;color:#f1f5f9;margin:0">${r?.name}</h2><span style="font-size:14px;color:#64748b">${els.length} élément(s)</span></div>
+      </div>
+      ${!els.length ? `<div style="text-align:center;padding:40px"><div style="font-size:40px;margin-bottom:12px;opacity:0.5">📦</div><div style="color:#64748b">Aucun élément</div></div>` : `
+        <div class="list" style="max-height:50vh;overflow-y:auto">
+          ${els.map(e=>{
+            const st = getStatut(e.statut);
+            return `
+              <div class="list-item" data-action="openElement" data-id="${e.id}">
+                ${e.photos?.length ? `<div style="width:48px;height:48px;border-radius:10px;overflow:hidden;flex-shrink:0"><img src="${e.photos[0].data}" style="width:100%;height:100%;object-fit:cover"></div>` : `<div style="width:48px;height:48px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center">📷</div>`}
+                <div style="flex:1;min-width:0">
+                  <div style="font-weight:600;color:#f1f5f9">${e.nom}</div>
+                  <span class="badge" style="background:${st.color}20;color:${st.color};margin-top:4px">${st.label}</span>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `}
+      <button class="btn btn-primary" style="margin-top:20px" data-action="openModal" data-modal="new-element">➕ Ajouter</button>
+    `;
+  }
+  
+  return `
+    <div class="modal-overlay" data-action="closeModal">
+      <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-handle"></div>
+        ${content}
+      </div>
+    </div>
+  `;
+};
+
+// ============================================
+// EVENTS
+// ============================================
+let photosData = [];
+
+const attachEvents = () => {
+  document.querySelectorAll('[data-action]').forEach(el => {
+    el.addEventListener('click', handleAction);
+  });
+  
+  const importInput = document.getElementById('import-input');
+  if(importInput) importInput.addEventListener('change', handleImport);
+  
+  const photoDrop = document.getElementById('photo-drop');
+  const photoInput = document.getElementById('photo-input');
+  if(photoDrop && photoInput){
+    photoDrop.addEventListener('click', () => photoInput.click());
+    photoInput.addEventListener('change', handlePhotoSelect);
+  }
+  
+  const statutSelect = document.getElementById('statut-select');
+  if(statutSelect){
+    statutSelect.addEventListener('change', (e) => {
+      state.element.statut = e.target.value;
+      const idx = state.decor.elements.findIndex(el=>el.id===state.element.id);
+      if(idx>-1) state.decor.elements[idx].statut = e.target.value;
+      save();
+      render();
+    });
+  }
+  
+  const searchInput = document.getElementById('search-input');
+  if(searchInput){
+    searchInput.addEventListener('input', (e) => {
+      state.searchQuery = e.target.value;
+      render();
+      document.getElementById('search-input')?.focus();
+    });
+  }
+  
+  const filterDate = document.getElementById('filter-date');
+  if(filterDate){
+    filterDate.addEventListener('change', (e) => {
+      state.filterDate = e.target.value;
+      render();
+    });
+  }
+};
+
+const handleAction = (e) => {
+  const el = e.currentTarget;
+  const action = el.dataset.action;
+  
+  switch(action){
+    case 'openProjet':
+      state.projet = state.data.projets.find(p=>p.id===el.dataset.id);
+      state.view = 'projet';
+      break;
+    case 'openDecor':
+      state.decor = state.projet.decors.find(d=>d.id===el.dataset.id);
+      state.view = 'decor';
+      state.tab = 'rubriques';
+      break;
+    case 'openRubrique':
+      state.rubrique = RUBRIQUES.find(r=>r.id===el.dataset.id);
+      state.modal = 'rubrique';
+      break;
+    case 'openElement':
+      state.element = state.decor.elements.find(e=>e.id===el.dataset.id);
+      state.modal = null;
+      state.view = 'element';
+      break;
+    case 'openAccessoire':
+      state.projet = state.data.projets.find(p=>p.id===el.dataset.pid);
+      state.decor = state.projet.decors.find(d=>d.id===el.dataset.did);
+      state.element = state.decor.elements.find(e=>e.id===el.dataset.eid);
+      state.view = 'element';
+      break;
+    case 'openLoueur':
+      state.loueur = state.data.loueurs.find(l=>l.id===el.dataset.id);
+      state.view = 'loueur';
+      break;
+    case 'openModal':
+      state.modal = el.dataset.modal;
+      photosData = [];
+      break;
+    case 'closeModal':
+      state.modal = null;
+      photosData = [];
+      break;
+    case 'closeMenu':
+      state.menu = false;
+      break;
+    case 'setTab':
+      state.tab = el.dataset.tab;
+      break;
+    case 'goTo':
+      state.view = el.dataset.view;
+      state.menu = false;
+      break;
+    case 'goToDepensesGlobal':
+      state.projet = null;
+      state.view = 'depenses';
+      state.menu = false;
+      break;
+    case 'filterRole':
+      state.filterRole = el.dataset.role;
+      break;
+    case 'sortDepenses':
+      state.depenseSort = el.dataset.sort;
+      break;
+    case 'goBack':
+      if(state.view==='print'){ state.view='decor'; state.tab='photos'; }
+      else if(state.view==='element'){ state.view='decor'; state.element=null; }
+      else if(state.view==='decor'){ state.view='projet'; state.decor=null; }
+      else if(state.view==='projet'){ state.view='dashboard'; state.projet=null; }
+      else if(state.view==='loueur'){ state.view='loueurs'; state.loueur=null; }
+      else if(state.view==='accessoires'){ state.view='projet'; }
+      else if(state.view==='depenses'){ state.projet ? state.view='projet' : state.view='dashboard'; }
+      else { state.view='dashboard'; }
+      break;
+    case 'saveProjet':
+      const nom = document.getElementById('f-nom').value.trim();
+      if(!nom) return;
+      const newProjet = {
+        id: Date.now().toString(),
+        nom,
+        type: document.getElementById('f-type').value,
+        production: document.getElementById('f-production').value,
+        realisateur: document.getElementById('f-realisateur').value,
+        chefDeco: document.getElementById('f-chefDeco').value,
+        dateDebut: document.getElementById('f-dateDebut').value,
+        dateFin: document.getElementById('f-dateFin').value,
+        decors: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      state.data.projets.push(newProjet);
+      save();
+      state.modal = null;
+      break;
+    case 'saveDecor':
+      const nomD = document.getElementById('f-nom').value.trim();
+      if(!nomD) return;
+      const newDecor = {
+        id: Date.now().toString(),
+        nom: nomD,
+        adresse: document.getElementById('f-adresse').value,
+        interieur: document.getElementById('f-interieur').value==='1',
+        studio: document.getElementById('f-studio').value==='1',
+        statut: document.getElementById('f-statut').value,
+        dateInstallation: document.getElementById('f-dateInstallation').value,
+        dateTournage: document.getElementById('f-dateTournage').value,
+        elements: [],
+        photos: []
+      };
+      state.projet.decors.push(newDecor);
+      state.projet.updatedAt = new Date().toISOString();
+      save();
+      state.modal = null;
+      break;
+    case 'saveElement':
+      const nomE = document.getElementById('f-nom').value.trim();
+      if(!nomE) return;
+      const newElement = {
+        id: Date.now().toString(),
+        nom: nomE,
+        rubrique: document.getElementById('f-rubrique').value,
+        statut: document.getElementById('f-statut').value,
+        description: document.getElementById('f-description').value,
+        dimensions: document.getElementById('f-dimensions').value,
+        quantite: document.getElementById('f-quantite').value,
+        couleur: document.getElementById('f-couleur').value,
+        matiere: document.getElementById('f-matiere').value,
+        role: document.getElementById('f-role')?.value || '',
+        dateJeu: document.getElementById('f-dateJeu')?.value || '',
+        loueurId: document.getElementById('f-loueurId')?.value || '',
+        coutLocation: document.getElementById('f-coutLocation').value,
+        caution: document.getElementById('f-caution').value,
+        dateDepart: document.getElementById('f-dateDepart').value,
+        dateRetour: document.getElementById('f-dateRetour').value,
+        notes: document.getElementById('f-notes').value,
+        photos: photosData.map(d=>({data:d,name:'photo'}))
+      };
+      state.decor.elements.push(newElement);
+      state.projet.updatedAt = new Date().toISOString();
+      save();
+      state.modal = null;
+      photosData = [];
+      break;
+    case 'saveLoueur':
+      const nomL = document.getElementById('f-nom').value.trim();
+      if(!nomL) return;
+      const newLoueur = {
+        id: Date.now().toString(),
+        nom: nomL,
+        specialite: document.getElementById('f-specialite').value,
+        contact: document.getElementById('f-contact').value,
+        telephone: document.getElementById('f-telephone').value,
+        email: document.getElementById('f-email').value,
+        adresse: document.getElementById('f-adresse').value
+      };
+      state.data.loueurs.push(newLoueur);
+      save();
+      state.modal = null;
+      break;
+    case 'saveDepense':
+      const montant = document.getElementById('f-montant').value;
+      if(!montant) return;
+      const newDep = {
+        id: Date.now().toString(),
+        projetId: state.projet?.id || null,
+        type: document.getElementById('f-type').value,
+        description: document.getElementById('f-description').value,
+        montant: parseFloat(montant),
+        date: document.getElementById('f-date').value,
+        fournisseur: document.getElementById('f-fournisseur').value,
+        notes: document.getElementById('f-notes').value
+      };
+      state.data.depenses.push(newDep);
+      save();
+      state.modal = null;
+      break;
+    case 'deleteProjet':
+      if(confirm('Supprimer ce projet ?')){
+        state.data.projets = state.data.projets.filter(p=>p.id!==state.projet.id);
+        state.data.depenses = state.data.depenses.filter(d=>d.projetId!==state.projet.id);
+        save();
+        state.projet = null;
+        state.view = 'dashboard';
+      }
+      break;
+    case 'deleteDecor':
+      if(confirm('Supprimer ce décor ?')){
+        state.projet.decors = state.projet.decors.filter(d=>d.id!==state.decor.id);
+        save();
+        state.decor = null;
+        state.view = 'projet';
+      }
+      break;
+    case 'deleteElement':
+      if(confirm('Supprimer ?')){
+        state.decor.elements = state.decor.elements.filter(e=>e.id!==state.element.id);
+        save();
+        state.element = null;
+        state.view = 'decor';
+      }
+      break;
+    case 'deleteLoueur':
+      if(confirm('Supprimer ?')){
+        state.data.loueurs = state.data.loueurs.filter(l=>l.id!==state.loueur.id);
+        save();
+        state.loueur = null;
+        state.view = 'loueurs';
+      }
+      break;
+    case 'viewPhoto':
+      state.viewerPhoto = parseInt(el.dataset.idx);
+      state.viewerType = el.dataset.type;
+      break;
+    case 'closeViewer':
+      state.viewerPhoto = null;
+      break;
+    case 'deletePhoto':
+      if(confirm('Supprimer cette photo ?')){
+        if(state.viewerType==='element') state.element.photos.splice(state.viewerPhoto, 1);
+        save();
+        state.viewerPhoto = null;
+      }
+      break;
+    case 'addElementPhoto':
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.multiple = true;
+      input.capture = 'environment';
+      input.onchange = (ev) => {
+        Array.from(ev.target.files).forEach(file => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            if(!state.element.photos) state.element.photos = [];
+            state.element.photos.push({data:e.target.result,name:file.name});
+            save();
+            render();
+          };
+          reader.readAsDataURL(file);
+        });
+      };
+      input.click();
+      break;
+    case 'exportData':
+      const dataStr = JSON.stringify(state.data, null, 2);
+      const blob = new Blob([dataStr], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `decor-pro-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      state.menu = false;
+      break;
+  }
+  render();
+};
+
+const handlePhotoSelect = (e) => {
+  const files = Array.from(e.target.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      photosData.push(ev.target.result);
+      updatePhotoPreview();
+    };
+    reader.readAsDataURL(file);
+  });
+};
+
+const updatePhotoPreview = () => {
+  const preview = document.getElementById('photo-preview');
+  const placeholder = document.getElementById('photo-placeholder');
+  if(preview && placeholder){
+    if(photosData.length > 0){
+      preview.innerHTML = photosData.map(d=>`<img src="${d}" style="width:60px;height:60px;object-fit:cover;border-radius:8px">`).join('') + `<div style="width:60px;height:60px;background:rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px">+</div>`;
+      placeholder.style.display = 'none';
+    } else {
+      preview.innerHTML = '';
+      placeholder.style.display = 'block';
+    }
+  }
+};
+
+const handleImport = (e) => {
+  const file = e.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const imported = JSON.parse(ev.target.result);
+        if(imported.projets){
+          state.data = imported;
+          if(!state.data.depenses) state.data.depenses = [];
+          save();
+          state.menu = false;
+          alert('Données importées !');
+          render();
+        }
+      } catch(err) {
+        alert('Fichier invalide');
+      }
+    };
+    reader.readAsText(file);
+  }
+};
+
+// Init
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js');
+}
+render();
+</script>
+</body>
+</html>
